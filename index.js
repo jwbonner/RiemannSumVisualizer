@@ -1,3 +1,5 @@
+const defaultMinX = 0;
+const defaultMaxX = 10;
 const minN = 1;
 const maxN = 5000;
 
@@ -17,6 +19,20 @@ const integralOutput = document.getElementsByClassName("integral-output")[0];
 originalGraph.setColor("blue");
 integralGraph.setColor("red");
 
+// Evaluate a function with error handling
+function evalFunction(f, x) {
+    var y;
+    try {
+        y = f(x);
+    } catch {
+        y = null;
+    }
+    if (isNaN(y)) {
+        y = null;
+    }
+    return y;
+}
+
 // Evaluates the function and updates the data for both graphs
 function updateData() {
     var f;
@@ -26,23 +42,33 @@ function updateData() {
         f = () => null;
     }
 
-    // Evaluate the function with error handling
-    function evalF(x) {
-        var y;
-        try {
-            y = f(x);
-        } catch {
-            y = null;
-        }
-        if (isNaN(y)) {
-            y = null;
-        }
-        return y;
+    var minX, maxX, minY, maxY;
+    try {
+        minX = new Function("return " + minXInput.value);
+    } catch {
+        minX = () => defaultMinX;
+    }
+    try {
+        maxX = new Function("return " + maxXInput.value);
+    } catch {
+        maxX = () => defaultMaxX;
+    }
+    try {
+        minY = new Function("return " + minYInput.value);
+    } catch {
+        minX = () => null;
+    }
+    try {
+        maxY = new Function("return " + maxYInput.value);
+    } catch {
+        maxX = () => null;
     }
 
     // Update ranges
-    var xRange = [Number(minXInput.value), Number(maxXInput.value)];
-    var yRange = [minYInput.value == "" ? null : Number(minYInput.value), maxYInput.value == "" ? null : Number(maxYInput.value)];
+    var xRange = [Number(evalFunction(minX, undefined)), Number(evalFunction(maxX, undefined))];
+    if (xRange[0] == null) xRange[0] = defaultMinX;
+    if (xRange[1] == null) xRange[1] = defaultMaxX;
+    var yRange = [minYInput.value == "" ? null : Number(evalFunction(minY, undefined)), maxYInput.value == "" ? null : Number(evalFunction(maxY, undefined))];
     originalGraph.setYRange(yRange);
     originalGraph.setXRange(xRange);
     integralGraph.setXRange(xRange);
@@ -55,7 +81,7 @@ function updateData() {
     if (pixelSize != Infinity) {
         while (x < xRange[1]) {
             functionXData.push(x);
-            var y = evalF(x);
+            var y = evalFunction(f, x);
             if (y == null || (yRange[0] != null && y < yRange[0]) || (yRange[1] != null && y > yRange[1])) {
                 functionYData.push(null);
             } else {
@@ -82,42 +108,42 @@ function updateData() {
         // Generate data based on the selected rule
         switch (ruleInput.value) {
             case "Left Hand Rule":
-                if (evalF(x) != null) {
+                if (evalFunction(f, x) != null) {
                     shapes.push({
                         xRange: [x, x + deltaX],
-                        yRange: [evalF(x), evalF(x)]
+                        yRange: [evalFunction(f, x), evalFunction(f, x)]
                     });
-                    integral += evalF(x) * deltaX;
+                    integral += evalFunction(f, x) * deltaX;
                 }
                 break;
 
             case "Right Hand Rule":
-                if (evalF(x + deltaX) != null) {
+                if (evalFunction(f, x + deltaX) != null) {
                     shapes.push({
                         xRange: [x, x + deltaX],
-                        yRange: [evalF(x + deltaX), evalF(x + deltaX)]
+                        yRange: [evalFunction(f, x + deltaX), evalFunction(f, x + deltaX)]
                     });
-                    integral += evalF(x + deltaX) * deltaX;
+                    integral += evalFunction(f, x + deltaX) * deltaX;
                 }
                 break;
 
             case "Midpoint Rule":
-                if (evalF(x + (deltaX / 2.0)) != null) {
+                if (evalFunction(f, x + (deltaX / 2.0)) != null) {
                     shapes.push({
                         xRange: [x, x + deltaX],
-                        yRange: [evalF(x + (deltaX / 2.0)), evalF(x + (deltaX / 2.0))]
+                        yRange: [evalFunction(f, x + (deltaX / 2.0)), evalFunction(f, x + (deltaX / 2.0))]
                     });
-                    integral += evalF(x + (deltaX / 2.0)) * deltaX;
+                    integral += evalFunction(f, x + (deltaX / 2.0)) * deltaX;
                 }
                 break;
 
             case "Trapezoidal Rule":
-                if (evalF(x) != null && evalF(x + deltaX) != null) {
+                if (evalFunction(f, x) != null && evalFunction(f, x + deltaX) != null) {
                     shapes.push({
                         xRange: [x, x + deltaX],
-                        yRange: [evalF(x), evalF(x + deltaX)]
+                        yRange: [evalFunction(f, x), evalFunction(f, x + deltaX)]
                     });
-                    integral += deltaX * (0.5 * (evalF(x) + evalF(x + deltaX)));
+                    integral += deltaX * (0.5 * (evalFunction(f, x) + evalFunction(f, x + deltaX)));
                 }
                 break;
         }
@@ -149,6 +175,8 @@ nInput.addEventListener("change", () => {
 });
 
 // Initialize data and event listeners
+minXInput.value = defaultMinX;
+maxXInput.value = defaultMaxX;
 updateData();
 functionInput.addEventListener("change", updateData);
 ruleInput.addEventListener("change", updateData);
