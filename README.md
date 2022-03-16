@@ -13,7 +13,7 @@ After entering a function, rule, and x range (interval), try increasing the n va
 
 ## Function Dictionary
 
-The function field is evaluated as standard JavaScript. Below are a few example functions/constants that are available:
+The function field and ranges are evaluated as standard JavaScript. Below are a few example functions/constants that are available:
 
 - `x ** 2`
 - `Math.sin(x)`
