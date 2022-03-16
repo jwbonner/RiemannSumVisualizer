@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        Calculus Project 2022
+    </title>
+    <style>
+        $(index.css)
+    </style>
+    <script>$(graph.js)</script>
+</head>
+
+<body>
+    <div class="title">Calculus Project 2022</div>
+    <div class="config">
+        <table>
+            <tr>
+                <th>Function</th>
+                <th>Rule</th>
+                <th>Min X</th>
+                <th>Max X</th>
+                <th>Min Y</th>
+                <th>Max Y</th>
+                <th>N</th>
+                <th>Integral</th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" class="function-input">
+                </td>
+                <td>
+                    <select class="rule-input">
+                        <option>Left Hand Rule</option>
+                        <option>Right Hand Rule</option>
+                        <option>Midpoint Rule</option>
+                        <option>Trapezoidal Rule</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" value="-10" class="number-input">
+                </td>
+                <td>
+                    <input type="number" value="10" class="number-input">
+                </td>
+                <td>
+                    <input type="number" placeholder="Auto" class="number-input">
+                </td>
+                <td>
+                    <input type="number" placeholder="Auto" class="number-input">
+                </td>
+                <td>
+                    <input type="number" value="5" class="number-input">
+                </td>
+                <td class="integral-output">0</td>
+            </tr>
+        </table>
+    </div>
+    <div class="graph-container">
+        <div class="original-graph-container">
+            <canvas class="original-graph"></canvas>
+        </div>
+        <div class="integral-graph-container">
+            <canvas class="integral-graph"></canvas>
+        </div>
+    </div>
+    <script>$(index.js)</script>
+</body>
+
+</html>
