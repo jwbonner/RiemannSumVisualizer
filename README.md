@@ -1,6 +1,6 @@
 # Riemann Sum Visualizer
 
-You can view the page live at https://jonahb55.github.io/RiemannSumVisualizer/.
+## https://jonahb55.github.io/RiemannSumVisualizer/
 
 This tool allows you to visualize the process of calculating a Riemann sum for any provided function. The following rules are supported:
 
