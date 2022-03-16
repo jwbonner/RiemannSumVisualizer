@@ -65,10 +65,14 @@ function updateData() {
     }
 
     // Update ranges
-    var xRange = [Number(evalFunction(minX, undefined)), Number(evalFunction(maxX, undefined))];
-    if (xRange[0] == null) xRange[0] = defaultMinX;
-    if (xRange[1] == null) xRange[1] = defaultMaxX;
-    var yRange = [minYInput.value == "" ? null : Number(evalFunction(minY, undefined)), maxYInput.value == "" ? null : Number(evalFunction(maxY, undefined))];
+    var xRange = [
+        minXInput.value == "" ? defaultMinX : Number(evalFunction(minX, undefined)),
+        maxXInput.value == "" ? defaultMaxX : Number(evalFunction(maxX, undefined))
+    ];
+    var yRange = [
+        minYInput.value == "" ? null : Number(evalFunction(minY, undefined)),
+        maxYInput.value == "" ? null : Number(evalFunction(maxY, undefined))
+    ];
     originalGraph.setYRange(yRange);
     originalGraph.setXRange(xRange);
     integralGraph.setXRange(xRange);
