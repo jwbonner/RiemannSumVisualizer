@@ -1,6 +1,6 @@
 // Manages a single graph on a canvas, with methods to update data and render the canvas
 function Graph(canvasContainer, canvas) {
-    const dataMargin = 0.25;
+    const dataMargin = 0.15;
     const maxYValue = 100000;
 
     // Graph pixel boundaries
