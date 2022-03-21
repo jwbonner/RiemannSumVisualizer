@@ -162,6 +162,7 @@ function updateData() {
     // Send data to graphs (and update numerical result)
     originalGraph.setShapes(shapes);
     integralGraph.setData(integralXData, integralYData);
+    if (Math.abs(integral) < 0.00001) integral = 0.0;
     integralOutput.innerText = integral.toFixed(5);
 }
 
